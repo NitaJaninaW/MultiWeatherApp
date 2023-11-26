@@ -14,7 +14,8 @@ class ExampleUnitTest {
         println("Temp: ${api.temperature}")
         println("Description: ${api.description}")
         println("Icon: ${api.iconUrl}")
-        println("Icon: ${api.location}")
+        println("Location: ${api.location}")
+        print("Provider:${api.providerUrl}")
     }
 
     @Test
@@ -24,18 +25,29 @@ class ExampleUnitTest {
         println("Temp: ${api.temperature}")
         println("Description: ${api.description}")
         println("Icon: ${api.iconUrl}")
-        println("Icon: ${api.location}")
+        println("Location: ${api.location}")
+        print("Provider:${api.providerUrl}")
     }
 
     @Test
     @Throws(IOException::class, JSONException::class)
     fun weatherStack_getResponseFromName() {
-        val api = WeatherStackAPI.fromLocationName("Dubai")
+        val api = WeatherStackAPI.fromLocationName("San Francisco")
+        println("Temp: ${api.temperature}")
+        println("Description: ${api.description}")
+        println("Icon: ${api.iconUrl}")
+        println("Location: ${api.location}")
+        print("Provider:${api.providerUrl}")
     }
 
     @Test
     @Throws(IOException::class, JSONException::class)
     fun weatherStack_getResponseFromLatLon() {
         val api = WeatherStackAPI.fromLatLon(25.252, 55.280)
+        println("Temp: ${api.temperature}")
+        println("Description: ${api.description}")
+        println("Icon: ${api.iconUrl}")
+        println("Location: ${api.location}")
+        print("Provider:${api.providerUrl}")
     }
 }

@@ -35,22 +35,30 @@ class WeatherStackAPI private constructor(queryString: String) : WeatherAPI {
         println(weatherdata.toString()) // Debug!
     }
 
+
     @get:Throws(JSONException::class)
     override val temperature: Int
-        get() = TODO("Not yet implemented")
+        get() = weatherdata.getJSONObject("current")
+            .getInt("temperature")
 
     @get:Throws(JSONException::class)
     override val description: String
-        get() = TODO("Not yet implemented")
+        get() = weatherdata.getJSONObject("current")
+            .getJSONArray("weather_descriptions")
+            .getString(0)
 
     @get:Throws(JSONException::class)
     override val iconUrl: String
-        get() = TODO("Not yet implemented")
+        get() = weatherdata.getJSONObject("current")
+            .getJSONArray("weather_icons")
+            .getString(0)
 
     @get:Throws(JSONException::class)
     override val location: String
-        get() = TODO("Not yet implemented")
+        get() = weatherdata.getJSONObject("location")
+            .getString("name")
 
     override val providerUrl: String
-        get() = TODO("Not yet implemented")
+        get() = "https://weatherstack.com"
+
 }

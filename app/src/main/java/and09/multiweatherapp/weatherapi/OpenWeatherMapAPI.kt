@@ -9,38 +9,6 @@ import java.net.URLEncoder
 class OpenWeatherMapAPI private constructor(queryString: String) : WeatherAPI {
     private val weatherdata: JSONObject
 
-    @get:Throws(JSONException::class)
-    override val temperature: Int
-        get() {
-            val main = weatherdata.getJSONObject("main")
-            val tempKelvin = main.getDouble("temp")
-            return (tempKelvin - 273.15).toInt()
-        }
-
-    @get:Throws(JSONException::class)
-    override val description: String
-        get() {
-            val weather = weatherdata.getJSONArray("weather")
-            return weather.getJSONObject(0).getString("description")
-        }
-
-    @get:Throws(JSONException::class)
-    override val iconUrl: String
-        get() {
-            val weather = weatherdata.getJSONArray("weather")
-            return return "https://openweathermap.org/img/w/" +
-                    "${weather.getJSONObject(0).getString("icon")}.png"
-        }
-
-    @get:Throws(JSONException::class)
-    override val location: String
-        get() {
-            return weatherdata.getString("name")
-        }
-
-    override val providerUrl: String
-        get() = "https://www.openweathermap.org"
-
     companion object {
         private const val API_KEY = "bc61e79ee95470488ae349db149ac65c"
         private const val BASE_URL =
@@ -66,4 +34,31 @@ class OpenWeatherMapAPI private constructor(queryString: String) : WeatherAPI {
         weatherdata = JSONObject(result)
         println(weatherdata.toString()) // Debug!
     }
+
+    @get:Throws(JSONException::class)
+    override val temperature: Int
+        get() = (weatherdata.getJSONObject("main")
+            .getDouble("temp") - 273.15).toInt()
+
+    @get:Throws(JSONException::class)
+    override val description: String
+        get() = weatherdata.getJSONArray("weather")
+            .getJSONObject(0)
+            .getString("description")
+
+    @get:Throws(JSONException::class)
+    override val iconUrl: String
+        get() = "https://openweathermap.org/img/w/${
+            weatherdata
+                .getJSONArray("weather").getJSONObject(0)
+                .getString("icon")
+        }.png"
+
+    @get:Throws(JSONException::class)
+    override val location: String
+        get() = weatherdata.getString("name")
+
+    override val providerUrl: String
+        get() = "https://www.openweathermap.org"
+
 }
