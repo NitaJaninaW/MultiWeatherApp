@@ -53,5 +53,4 @@ class WeatherStackAPI private constructor(queryString: String) : WeatherAPI {
 
     override val providerUrl: String
         get() = TODO("Not yet implemented")
-
 }
