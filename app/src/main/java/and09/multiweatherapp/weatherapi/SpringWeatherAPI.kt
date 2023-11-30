@@ -5,7 +5,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 import java.net.URLEncoder
-
+//FACTORY Design Pattern
 class SpringWeatherAPI private constructor(queryString: String) : WeatherAPI {
     private val weatherdata: JSONObject
 
