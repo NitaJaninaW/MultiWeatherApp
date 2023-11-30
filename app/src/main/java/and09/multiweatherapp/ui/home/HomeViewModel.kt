@@ -8,6 +8,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+
+//OBSERVER Design Pattern
 class HomeViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
