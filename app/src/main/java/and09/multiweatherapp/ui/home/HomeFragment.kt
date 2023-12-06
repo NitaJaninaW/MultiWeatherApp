@@ -60,6 +60,7 @@ class HomeFragment : Fragment() {
             textView.text = it
         }
         homeViewModel.doAction()*/
+        homeViewModel.retrieveWeatherData()
         return root
     }
 
