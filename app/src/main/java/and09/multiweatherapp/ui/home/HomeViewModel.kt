@@ -1,7 +1,11 @@
 package and09.multiweatherapp.ui.home
 
+import and09.multiweatherapp.R
+import and09.multiweatherapp.weatherapi.FromLocationName
 import and09.multiweatherapp.weatherapi.OpenWeatherMapAPI
+import and09.multiweatherapp.weatherapi.SpringWeatherAPI
 import and09.multiweatherapp.weatherapi.WeatherAPI
+import and09.multiweatherapp.weatherapi.WeatherStackAPI
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -10,11 +14,16 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.preference.PreferenceManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.URL
+import kotlin.reflect.full.companionObject
+import kotlin.reflect.full.companionObjectInstance
+import kotlin.reflect.full.declaredFunctions
+import kotlin.reflect.full.hasAnnotation
 
 
 //OBSERVER Design Pattern
@@ -45,12 +54,35 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             var weather: WeatherAPI? = null
             var bitmap: Bitmap? = null
             withContext(Dispatchers.IO) {
+                val app = getApplication() as Application
+                val prefs = PreferenceManager.getDefaultSharedPreferences(app)
+                val locationName =
+                    prefs.getString(
+                        app.getString(R.string.location_name),
+                        "Darmstadt"
+                    )
+                val providerClassName = prefs.getString(
+                    app.getString(R.string.weather_provider), "OpenWeatherMapAPI"
+                )
                 try {
-                    weather = OpenWeatherMapAPI.fromLocationName("Miami")
+                    /*weather = when (providerClassName) {
+                        "OpenWeatherMapAPI" ->
+                            OpenWeatherMapAPI.fromLocationName(locationName)
+
+                        "WeatherStackAPI" ->
+                            WeatherStackAPI.fromLocationName(locationName)
+
+                        else -> SpringWeatherAPI.fromLocationName(locationName)
+                    }*/
+                    val cls =
+                        Class.forName(
+                            "${WeatherAPI::class.java.`package`.name}.$providerClassName"
+                        ).kotlin
+                    val func =
+                        cls.companionObject?.declaredFunctions?.find { it.hasAnnotation<FromLocationName>() }
+                    weather = func?.call(cls.companionObjectInstance, locationName) as WeatherAPI
+
                     Log.d(javaClass.simpleName, "Temp: ${weather?.temperature}")
-                    Log.d(javaClass.simpleName, "Description:${weather?.description}")
-                    Log.d(javaClass.simpleName, "Icon-URL: ${weather?.iconUrl}")
-                    Log.d(javaClass.simpleName, "Provider:${weather?.providerUrl}")
                     val iconUrl = URL(weather?.iconUrl) // java.net!
                     val inputStream = iconUrl.openStream()
                     bitmap = BitmapFactory.decodeStream(inputStream)

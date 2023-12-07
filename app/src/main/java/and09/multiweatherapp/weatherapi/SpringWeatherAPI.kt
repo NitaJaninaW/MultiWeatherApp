@@ -12,6 +12,7 @@ class SpringWeatherAPI private constructor(queryString: String) : WeatherAPI {
     companion object {
         private const val BASE_URL = "http://192.168.1.105:8080/weather?"
 
+        @FromLocationName
         @Throws(IOException::class, JSONException::class)
         fun fromLocationName(locationName: String?):
                 WeatherAPI = SpringWeatherAPI(

@@ -14,6 +14,7 @@ class WeatherStackAPI private constructor(queryString: String) : WeatherAPI {
         private const val BASE_URL =
             "http://api.weatherstack.com/current?access_key=$API_KEY&"
 
+        @FromLocationName
         @Throws(IOException::class, JSONException::class)
         fun fromLocationName(locationName: String?):
                 WeatherAPI {

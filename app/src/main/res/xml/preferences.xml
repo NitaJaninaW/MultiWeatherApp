@@ -10,14 +10,14 @@
             android:title="Automatische Standortbestimmung"
             app:iconSpaceReserved="false" />
         <EditTextPreference
-            android:key="location_name"
+            android:key="@string/location_name"
             android:title="Manuelle Standorteingabe"
             app:iconSpaceReserved="false" />
         <ListPreference
             android:defaultValue="OpenWeatherMapAPI"
             android:entries="@array/provider_names"
             android:entryValues="@array/class_names"
-            android:key="weather_provider"
+            android:key="@string/weather_provider"
             android:title="Wetterdienst"
             app:iconSpaceReserved="false" />
     </PreferenceCategory>
