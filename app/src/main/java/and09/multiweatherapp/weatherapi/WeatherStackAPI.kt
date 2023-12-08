@@ -3,6 +3,7 @@ package and09.multiweatherapp.weatherapi
 import and09.multiweatherapp.HttpRequest
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.FileNotFoundException
 import java.io.IOException
 import java.net.URLEncoder
 
@@ -34,6 +35,9 @@ class WeatherStackAPI private constructor(queryString: String) : WeatherAPI {
         val result = HttpRequest.request(BASE_URL + queryString)
         weatherdata = JSONObject(result)
         println(weatherdata.toString()) // Debug!
+        if (weatherdata.has("success") &&
+            weatherdata.getBoolean("success") == false) throw
+        FileNotFoundException()
     }
 
 
